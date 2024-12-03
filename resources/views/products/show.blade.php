@@ -22,7 +22,10 @@
                     <h3 class="text-success">Price: Rp. {{ number_format($product->price, 2) }}</h3>
                     <p class="text-muted mb-4">{{ $product->description }}</p>
                     <div class="mb-3">
-                        <span class="badge bg-primary">Category: {{ $product->category->name }}</span>
+                        <!-- Apply different background color based on category -->
+                        <span class="badge" style="background-color: {{ getCategoryColor($product->category->name) }};">
+                            Category: {{ $product->category->name }}
+                        </span>
                     </div>
                     <p class="text-dark"><strong>Stock:</strong> {{ $product->stock }}</p>
                     <!-- Add to Cart Button -->
@@ -78,3 +81,17 @@
     </div>
 </div>
 @endsection
+
+@php
+// Helper function to return category color
+function getCategoryColor($categoryName) {
+    $colors = [
+        'Oli Motor' => '#FF4C4C',    // Red
+        'Lampu Motor' => '#FFC107',  // Yellow
+        'Ban Motor' => '#28A745',    // Green
+        'Sparepart' => '#007BFF',    // Blue
+    ];
+
+    return $colors[$categoryName] ?? '#6C757D'; // Default color
+}
+@endphp

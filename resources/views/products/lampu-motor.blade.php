@@ -34,7 +34,7 @@
                 <div class="card h-100 border-0 shadow" style="background-color: #2c3e50; color: #ecf0f1;">
                     <!-- Image Section -->
                     <a href="{{ route('products.show', $product->id) }}" class="text-decoration-none">
-                        <img src="{{ file_exists(public_path($product->image)) ? asset($product->image) : 'https://placehold.co/300x300/2c3e50/white' }}"
+                        <img src="{{ Storage::url('/' . $product->image) }}"
                              class="card-img-top rounded-top"
                              alt="{{ $product->name }}"
                              style="height: 200px; object-fit: cover; filter: brightness(0.9);">
@@ -43,10 +43,14 @@
                     <div class="card-body text-center">
                         <h5 class="card-title text-light">{{ $product->name }}</h5>
                         <p class="card-text text-warning fw-bold">Rp. {{ number_format($product->price, 2) }}</p>
-                        <!-- Add to Cart Button -->
+                        <!-- Add to Cart Form -->
                         <form action="{{ route('cart.store') }}" method="POST" class="d-inline-block">
                             @csrf
                             <input type="hidden" name="product_id" value="{{ $product->id }}">
+                            <!-- Quantity Input -->
+                            <div class="mb-2">
+                                <input type="number" name="quantity" min="1" value="1" class="form-control text-center" style="width: 60px; margin: 0 auto;">
+                            </div>
                             <button type="submit" class="btn btn-warning w-100 text-dark fw-bold">
                                 <i class="fas fa-cart-plus"></i> Add to Cart
                             </button>

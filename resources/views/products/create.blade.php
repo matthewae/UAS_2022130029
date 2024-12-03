@@ -27,7 +27,10 @@
             <select name="category_id" id="category_id" class="form-select">
                 <option value="">-- Select Category --</option>
                 @foreach($categories as $category)
-                    <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                    <option value="{{ $category->id }}"
+                        class="category-{{ $category->id }}"
+                        style="background-color: {{ $category->color_code ?? '#ffffff' }};"
+                        {{ old('category_id') == $category->id ? 'selected' : '' }}>
                         {{ $category->name }}
                     </option>
                 @endforeach
@@ -37,14 +40,13 @@
             @enderror
         </div>
 
-
         <div class="mb-3">
             <label for="description" class="form-label">Description</label>
             <textarea name="description" id="description" class="form-control">{{ old('description') }}</textarea>
         </div>
 
         <div class="mb-3">
-            <label for="stock" class="form-label">stock</label>
+            <label for="stock" class="form-label">Stock</label>
             <input type="number" name="stock" id="stock" class="form-control" value="{{ old('stock') }}">
             @error('stock')
                 <div class="text-danger">{{ $message }}</div>

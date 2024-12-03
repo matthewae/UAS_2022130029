@@ -23,24 +23,27 @@ class CartController extends Controller
     public function store(Request $request)
     {
         $product = Product::findOrFail($request->product_id);
+        $quantity = $request->input('quantity', 1);
 
+        // Logic untuk menambahkan produk ke keranjang
+        // Misalnya menggunakan session atau database untuk menyimpan keranjang belanja
+        // Contoh dengan session
         $cart = session()->get('cart', []);
-
         if (isset($cart[$product->id])) {
-            $cart[$product->id]['quantity'] += 1;
+            $cart[$product->id]['quantity'] += $quantity; // Menambahkan kuantitas
         } else {
             $cart[$product->id] = [
                 'name' => $product->name,
                 'price' => $product->price,
+                'quantity' => $quantity,
                 'image' => $product->image,
-                'quantity' => 1,
             ];
         }
-
         session()->put('cart', $cart);
 
-        return redirect()->back()->with('success', 'Product added to cart!');
+        return redirect()->route('cart.index')->with('success', 'Product added to cart successfully!');
     }
+
 
     public function destroy($id)
     {
@@ -94,6 +97,6 @@ class CartController extends Controller
 
         session()->forget('cart');
 
-        return redirect()->route('products.baju-pria')->with('success', 'Payment successful and your order is confirmed!');
+        return redirect()->route('products.oli-motor')->with('success', 'Payment successful and your order is confirmed!');
     }
 }
