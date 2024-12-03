@@ -2,48 +2,56 @@
 
 @section('content')
 @if(session('success'))
-    <div class="alert alert-success">
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
         {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 @endif
 
-<div class="container">
-    <h1 class="text-center mb-4">Spareparts</h1>
+<div class="container py-5">
+    <h1 class="text-center mb-5 fw-bold" style="color: #6c757d;">Spareparts</h1>
 
-    <div class="d-flex justify-content-end mb-3">
-        <a href="{{ route('cart.index') }}" class="btn btn-primary">
-            View Cart
+    <!-- Cart Button -->
+    <div class="d-flex justify-content-end mb-4">
+        <a href="{{ route('cart.index') }}" class="btn btn-outline-primary btn-lg">
+            <i class="fas fa-shopping-cart"></i> View Cart
         </a>
     </div>
 
-    <div class="row">
+    <!-- Product Grid -->
+    <div class="row g-4">
         @foreach ($products as $product)
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <a href="{{ route('products.show', $product->id) }}">
-                        <img src="{{ file_exists(public_path($product->image)) ? asset($product->image) : 'https://placehold.co/150x150' }}"
-                             class="card-img-top"
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm" style="border-radius: 15px;">
+                    <!-- Product Image -->
+                    <a href="{{ route('products.show', $product->id) }}" class="text-decoration-none">
+                        <img src="{{ file_exists(public_path($product->image)) ? asset($product->image) : 'https://placehold.co/300x300/eeeeee/333333' }}"
+                             class="card-img-top rounded-top"
                              alt="{{ $product->name }}"
-                             width="500"
-                             height="500"
-                             style="object-fit: cover;">
+                             style="height: 200px; object-fit: cover; border-radius: 15px 15px 0 0;">
                     </a>
-                    <div class="card-body">
-                        <h5 class="card-title">{{ $product->name }}</h5>
-                        <p class="card-text">Price: Rp. {{ number_format($product->price, 2) }}</p>
-                        <form action="{{ route('cart.store') }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="product_id" value="{{ $product->id }}">
-                            <button type="submit" class="btn btn-success w-100">Add to Cart</button>
-                        </form>
+                    <!-- Card Body -->
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-dark fw-bold">{{ $product->name }}</h5>
+                        <p class="card-text text-success fw-bold">Rp. {{ number_format($product->price, 2) }}</p>
+                        <div class="d-grid">
+                            <form action="{{ route('cart.store') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fas fa-cart-plus"></i> Add to Cart
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         @endforeach
     </div>
 
-    <div class="d-flex justify-content-center">
-        {{ $products->links() }} <!-- Pagination links -->
+    <!-- Pagination -->
+    <div class="d-flex justify-content-center mt-5">
+        {{ $products->links() }}
     </div>
 </div>
 @endsection

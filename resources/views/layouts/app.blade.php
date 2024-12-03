@@ -18,66 +18,68 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-lg">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <!-- Brand -->
+                <a class="navbar-brand d-flex align-items-center" href="{{ url('/') }}">
+                    <img src="{{ asset('images/logo.png') }}" alt="Logo" style="width: 30px; height: 30px; margin-right: 10px;">
                     {{ config('app.name', 'Laravel') }}
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+
+                <!-- Toggler -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
+                <!-- Navbar Items -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <!-- Left Side -->
                     <ul class="navbar-nav me-auto">
-                        <!-- Add links for categories here -->
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('products.index') }}">All Products</a>
+                            <a class="nav-link text-light" href="{{ route('products.index') }}"><i class="fas fa-th"></i> All Products</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('products.oli-motor') }}">Oli Motor</a>
+                            <a class="nav-link text-light" href="{{ route('products.oli-motor') }}"><i class="fas fa-oil-can"></i> Oli Motor</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('products.lampu-motor') }}">Lampu Motor</a>
+                            <a class="nav-link text-light" href="{{ route('products.lampu-motor') }}"><i class="fas fa-lightbulb"></i> Lampu Motor</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('products.ban') }}">Ban Motor</a>
+                            <a class="nav-link text-light" href="{{ route('products.ban') }}"><i class="fas fa-tire"></i> Ban Motor</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('products.sparepart') }}">Sparepart</a>
+                            <a class="nav-link text-light" href="{{ route('products.sparepart') }}"><i class="fas fa-tools"></i> Sparepart</a>
                         </li>
                     </ul>
 
-                    <!-- Right Side Of Navbar -->
+                    <!-- Right Side -->
                     <ul class="navbar-nav ms-auto">
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                    <a class="nav-link text-light" href="{{ route('login') }}"><i class="fas fa-sign-in-alt"></i> {{ __('Login') }}</a>
                                 </li>
                             @endif
 
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link text-light" href="{{ route('register') }}"><i class="fas fa-user-plus"></i> {{ __('Register') }}</a>
                                 </li>
                             @endif
                         @else
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('transaction-history') }}">Transaction History</a>
+                                <a class="nav-link text-light" href="{{ route('transaction-history') }}"><i class="fas fa-history"></i> Transaction History</a>
                             </li>
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-user-circle"></i> {{ Auth::user()->name }}
                                 </a>
-
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <div class="dropdown-menu dropdown-menu-end">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
-                                                    document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                        onclick="event.preventDefault();
+                                        document.getElementById('logout-form').submit();">
+                                        <i class="fas fa-sign-out-alt"></i> {{ __('Logout') }}
                                     </a>
-
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>

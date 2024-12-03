@@ -21,7 +21,6 @@ class ProductController extends Controller
         return view('products.show', compact('product'));
     }
 
-
     public function create()
     {
         $categories = Category::all();
@@ -32,16 +31,16 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'price' => 'required|numeric',
+            'price' => 'required|numeric|min:0',
             'category_id' => 'required|exists:categories,id',
             'description' => 'nullable|string',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'stock' => 'required|integer|min:0',
         ]);
 
         $imagePath = null;
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->move(public_path('images/products'), $request->file('image')->getClientOriginalName());
+            $imagePath = $request->file('image')->store('products', 'public');
         }
 
         Product::create([
@@ -49,9 +48,11 @@ class ProductController extends Controller
             'price' => $request->price,
             'category_id' => $request->category_id,
             'description' => $request->description,
-            'image' => 'images/products/' . $request->file('image')->getClientOriginalName(),
+            'image' => $imagePath,
             'stock' => $request->stock,
         ]);
+
+
 
         return redirect()->route('products.index')->with('success', 'Product created successfully');
     }
@@ -63,24 +64,24 @@ class ProductController extends Controller
         return view('products.edit', compact('product', 'categories'));
     }
 
-    public function update(Request $request, Product $product)
+    public function update(Request $request, $id)
     {
+        $product = Product::findOrFail($id);
+
         $request->validate([
             'name' => 'required|string|max:255',
-            'price' => 'required|numeric',
+            'price' => 'required|numeric|min:0',
             'category_id' => 'required|exists:categories,id',
             'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'stock' => 'required|integer|min:0',
         ]);
 
-        $imagePath = $product->image;
-
         if ($request->hasFile('image')) {
             if ($product->image) {
-                Storage::delete('public/' . $product->image);
+                Storage::disk('public')->delete($product->image);
             }
-            $imagePath = $request->file('image')->store('products', 'public');
+            $product->image = $request->file('image')->store('products', 'public');
         }
 
         $product->update([
@@ -88,7 +89,7 @@ class ProductController extends Controller
             'price' => $request->price,
             'category_id' => $request->category_id,
             'description' => $request->description,
-            'image' => $imagePath,
+            'image' => $product->image,
             'stock' => $request->stock,
         ]);
 
